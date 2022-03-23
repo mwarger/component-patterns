@@ -9,7 +9,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -52,40 +51,17 @@ export default function MenuExample() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
+            <MenuWithIconButton
+              handleOpen={handleOpenNavMenu}
+              handleClose={handleCloseNavMenu}
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+              menuOptions={pages}
+              useMenuIcon={true}
+              avatarProps={{
+                src: 'https://www.placecage.com/100/100',
+                alt: 'avatar',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            />
           </Box>
           <Typography
             variant="h6"
@@ -108,36 +84,75 @@ export default function MenuExample() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="avatar" src="https://www.placecage.com/100/100" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
+            <MenuWithIconButton
+              handleOpen={handleOpenUserMenu}
+              handleClose={handleCloseUserMenu}
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+              menuOptions={settings}
+              useMenuIcon={false}
+              avatarProps={{
+                src: 'https://www.placecage.com/100/100',
+                alt: 'avatar',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            />
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
+  );
+}
+
+function MenuWithIconButton({
+  handleOpen,
+  handleClose,
+  anchorEl,
+  menuOptions,
+  useMenuIcon = true,
+  avatarProps,
+}: {
+  handleOpen: (event: React.MouseEvent<HTMLElement>) => void;
+  handleClose: (event: React.MouseEvent<HTMLElement>) => void;
+  anchorEl: HTMLElement | null;
+  menuOptions: string[];
+  useMenuIcon?: boolean;
+  avatarProps?: {
+    src: string;
+    alt: string;
+  };
+}) {
+  const buttonElement = useMenuIcon ? (
+    <MenuIcon />
+  ) : (
+    <Avatar alt={avatarProps?.alt} src={avatarProps?.src} />
+  );
+
+  return (
+    <>
+      <IconButton onClick={handleOpen} sx={{ p: 0 }} color="inherit">
+        {buttonElement}
+      </IconButton>
+      <Menu
+        sx={{ mt: '45px' }}
+        id="menu-appbar"
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        {menuOptions.map((option) => (
+          <MenuItem key={option} onClick={handleClose}>
+            <Typography textAlign="center">{option}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
   );
 }
