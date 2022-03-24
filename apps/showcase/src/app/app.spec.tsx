@@ -12,6 +12,6 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(<App />);
 
-    expect(getByText(/Welcome showcase/gi)).toBeTruthy();
+    expect(getByText(/MUI React Menu Examples/gi)).toBeTruthy();
   });
 });

@@ -29,10 +29,32 @@ export default function MenuExample() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <MenuWithIconButton
-              menuOptions={pages}
-              IconElement={<MenuIcon />}
-            />
+            <MenuWithIconButton IconElement={<MenuIcon />}>
+              {(toggleMenu, anchorEl) => (
+                <Menu
+                  sx={{ mt: 5 }}
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={toggleMenu}
+                >
+                  {pages.map((option) => (
+                    <MenuItem key={option} onClick={toggleMenu}>
+                      <Typography textAlign="center">{option}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              )}
+            </MenuWithIconButton>
           </Box>
           <Typography
             variant="h6"
@@ -55,11 +77,35 @@ export default function MenuExample() {
 
           <Box sx={{ flexGrow: 0 }}>
             <MenuWithIconButton
-              menuOptions={settings}
               IconElement={
                 <Avatar src="https://www.placecage.com/100/100" alt="avatar" />
               }
-            />
+            >
+              {(toggleMenu, anchorEl) => (
+                <Menu
+                  sx={{ mt: 5 }}
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={toggleMenu}
+                >
+                  {settings.map((option) => (
+                    <MenuItem key={option} onClick={toggleMenu}>
+                      <Typography textAlign="center">{option}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              )}
+            </MenuWithIconButton>
           </Box>
         </Toolbar>
       </Container>
@@ -67,46 +113,34 @@ export default function MenuExample() {
   );
 }
 
-function MenuWithIconButton({
-  menuOptions,
-  IconElement,
-}: {
-  menuOptions: string[];
-  IconElement: React.ReactNode;
-}) {
+function useToggleMenu() {
   const [anchorEl, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
   const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav((el) => (el ? null : event.currentTarget));
   };
 
+  return { toggleMenu, anchorEl };
+}
+
+function MenuWithIconButton({
+  IconElement,
+  children,
+}: {
+  IconElement: React.ReactNode;
+  children: (
+    toggleMenu: (event: React.MouseEvent<HTMLElement>) => void,
+    anchorEl: null | HTMLElement
+  ) => React.ReactNode;
+}) {
+  const { toggleMenu, anchorEl } = useToggleMenu();
+
   return (
     <>
       <IconButton onClick={toggleMenu} sx={{ p: 0 }} color="inherit">
         {IconElement}
       </IconButton>
-      <Menu
-        sx={{ mt: 5 }}
-        id="menu-appbar"
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={Boolean(anchorEl)}
-        onClose={toggleMenu}
-      >
-        {menuOptions.map((option) => (
-          <MenuItem key={option} onClick={toggleMenu}>
-            <Typography textAlign="center">{option}</Typography>
-          </MenuItem>
-        ))}
-      </Menu>
+      {children(toggleMenu, anchorEl)}
     </>
   );
 }

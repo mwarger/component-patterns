@@ -29,10 +29,7 @@ export default function MenuExample() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <MenuWithIconButton
-              menuOptions={pages}
-              IconElement={<MenuIcon />}
-            />
+            <NavMenu />
           </Box>
           <Typography
             variant="h6"
@@ -54,12 +51,7 @@ export default function MenuExample() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <MenuWithIconButton
-              menuOptions={settings}
-              IconElement={
-                <Avatar src="https://www.placecage.com/100/100" alt="avatar" />
-              }
-            />
+            <UserAvatarMenu />
           </Box>
         </Toolbar>
       </Container>
@@ -67,23 +59,23 @@ export default function MenuExample() {
   );
 }
 
-function MenuWithIconButton({
-  menuOptions,
-  IconElement,
-}: {
-  menuOptions: string[];
-  IconElement: React.ReactNode;
-}) {
+function useToggleMenu() {
   const [anchorEl, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
   const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav((el) => (el ? null : event.currentTarget));
   };
 
+  return { toggleMenu, anchorEl };
+}
+
+function UserAvatarMenu() {
+  const { toggleMenu, anchorEl } = useToggleMenu();
+
   return (
     <>
       <IconButton onClick={toggleMenu} sx={{ p: 0 }} color="inherit">
-        {IconElement}
+        <Avatar src="https://www.placecage.com/100/100" alt="avatar" />
       </IconButton>
       <Menu
         sx={{ mt: 5 }}
@@ -101,9 +93,52 @@ function MenuWithIconButton({
         open={Boolean(anchorEl)}
         onClose={toggleMenu}
       >
-        {menuOptions.map((option) => (
+        {settings.map((option) => (
           <MenuItem key={option} onClick={toggleMenu}>
             <Typography textAlign="center">{option}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
+  );
+}
+
+function NavMenu() {
+  const { toggleMenu, anchorEl } = useToggleMenu();
+
+  return (
+    <>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={toggleMenu}
+        color="inherit"
+      >
+        <MenuIcon />
+      </IconButton>
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        open={Boolean(anchorEl)}
+        onClose={toggleMenu}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+        }}
+      >
+        {pages.map((page) => (
+          <MenuItem key={page} onClick={toggleMenu}>
+            <Typography textAlign="center">{page}</Typography>
           </MenuItem>
         ))}
       </Menu>

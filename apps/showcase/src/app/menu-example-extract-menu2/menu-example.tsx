@@ -2,9 +2,9 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
@@ -102,33 +102,45 @@ function MenuWithIconButton({
   anchorEl,
   menuOptions,
   IconElement,
+  IconButtonProps,
+  MenuProps,
 }: {
   handleOpen: (event: React.MouseEvent<HTMLElement>) => void;
   handleClose: (event: React.MouseEvent<HTMLElement>) => void;
   anchorEl: HTMLElement | null;
   menuOptions: string[];
   IconElement: React.ReactNode;
+  IconButtonProps?: IconButtonProps;
+  MenuProps?: MenuProps;
 }) {
   return (
     <>
-      <IconButton onClick={handleOpen} sx={{ p: 0 }} color="inherit">
+      <IconButton
+        onClick={handleOpen}
+        sx={{ p: 0 }}
+        color="inherit"
+        {...IconButtonProps}
+      >
         {IconElement}
       </IconButton>
       <Menu
-        sx={{ mt: '45px' }}
+        sx={{ mt: '45px', ...MenuProps?.sx }}
         id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
+          ...MenuProps?.anchorOrigin,
         }}
         keepMounted
         transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
+          ...MenuProps?.transformOrigin,
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        {...MenuProps}
       >
         {menuOptions.map((option) => (
           <MenuItem key={option} onClick={handleClose}>

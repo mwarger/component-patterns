@@ -57,10 +57,10 @@ export default function MenuExample() {
               anchorEl={anchorElNav}
               menuOptions={pages}
               useMenuIcon={true}
-              avatarProps={{
-                src: 'https://www.placecage.com/100/100',
-                alt: 'avatar',
-              }}
+              // avatarProps={{
+              //   src: 'https://www.placecage.com/100/100',
+              //   alt: 'avatar',
+              // }}
             />
           </Box>
           <Typography
@@ -102,28 +102,33 @@ export default function MenuExample() {
   );
 }
 
-function MenuWithIconButton({
-  handleOpen,
-  handleClose,
-  anchorEl,
-  menuOptions,
-  useMenuIcon = true,
-  avatarProps,
-}: {
+type IconAvatarProps =
+  | {
+      useMenuIcon: true;
+    }
+  | {
+      useMenuIcon: false;
+      avatarProps: {
+        src: string;
+        alt: string;
+      };
+    };
+
+type MenuIconProps = {
   handleOpen: (event: React.MouseEvent<HTMLElement>) => void;
   handleClose: (event: React.MouseEvent<HTMLElement>) => void;
   anchorEl: HTMLElement | null;
+} & {
   menuOptions: string[];
-  useMenuIcon?: boolean;
-  avatarProps?: {
-    src: string;
-    alt: string;
-  };
-}) {
+} & IconAvatarProps;
+
+function MenuWithIconButton(props: MenuIconProps) {
+  const { handleOpen, handleClose, anchorEl, menuOptions, useMenuIcon } = props;
+
   const buttonElement = useMenuIcon ? (
     <MenuIcon />
   ) : (
-    <Avatar alt={avatarProps?.alt} src={avatarProps?.src} />
+    <Avatar alt={props.avatarProps.alt} src={props.avatarProps.src} />
   );
 
   return (

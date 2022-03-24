@@ -64,30 +64,13 @@ export default function MenuExample() {
                 <Avatar src="https://www.placecage.com/100/100" alt="avatar" />
               }
             >
-              {(toggleMenu, anchorEl) => (
-                <Menu
-                  sx={{ mt: 5 }}
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={toggleMenu}
-                >
-                  {settings.map((option) => (
-                    <MenuItem key={option} onClick={toggleMenu}>
-                      <Typography textAlign="center">{option}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              )}
+              {(toggleMenu) =>
+                settings.map((option) => (
+                  <MenuItem key={option} onClick={toggleMenu}>
+                    <Typography textAlign="center">{option}</Typography>
+                  </MenuItem>
+                ))
+              }
             </MenuWithIconButton>
           </Box>
         </Toolbar>
@@ -102,12 +85,8 @@ function MenuWithIconButton({
 }: {
   IconElement: React.ReactNode;
   children: (
-    toggleMenu: (event: React.MouseEvent<HTMLElement>) => void,
-    anchorEl: null | HTMLElement
+    toggleMenu: (event: React.MouseEvent<HTMLElement>) => void
   ) => React.ReactNode;
-  // what about Menu props?
-  // other styles?
-  // what if we want another button but not an icon button?
 }) {
   const [anchorEl, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
@@ -120,7 +99,24 @@ function MenuWithIconButton({
       <IconButton onClick={toggleMenu} sx={{ p: 0 }} color="inherit">
         {IconElement}
       </IconButton>
-      {children(toggleMenu, anchorEl)}
+      <Menu
+        sx={{ mt: 5 }}
+        id="menu-appbar"
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorEl)}
+        onClose={toggleMenu}
+      >
+        {children(toggleMenu)}
+      </Menu>
     </>
   );
 }
