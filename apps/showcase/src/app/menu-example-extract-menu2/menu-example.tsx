@@ -57,6 +57,16 @@ export default function MenuExample() {
               anchorEl={anchorElNav}
               menuOptions={pages}
               IconElement={<MenuIcon />}
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                },
+                transformOrigin: {
+                  vertical: 'top',
+                  horizontal: 'left',
+                },
+              }}
             />
           </Box>
           <Typography
@@ -88,6 +98,9 @@ export default function MenuExample() {
               IconElement={
                 <Avatar src="https://www.placecage.com/100/100" alt="avatar" />
               }
+              MenuProps={{
+                sx: { mt: '45px' },
+              }}
             />
           </Box>
         </Toolbar>
@@ -110,8 +123,8 @@ function MenuWithIconButton({
   anchorEl: HTMLElement | null;
   menuOptions: string[];
   IconElement: React.ReactNode;
-  IconButtonProps?: IconButtonProps;
-  MenuProps?: MenuProps;
+  IconButtonProps?: Partial<IconButtonProps>;
+  MenuProps?: Partial<MenuProps>;
 }) {
   return (
     <>
@@ -124,7 +137,7 @@ function MenuWithIconButton({
         {IconElement}
       </IconButton>
       <Menu
-        sx={{ mt: '45px', ...MenuProps?.sx }}
+        sx={{ ...MenuProps?.sx }}
         id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
