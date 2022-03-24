@@ -20,6 +20,10 @@
     "vite-plugin-checker": "^0.4.3"
   },
   "devDependencies": {
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
     "@nrwl/cli": "13.9.4",
     "@nrwl/eslint-plugin-nx": "13.9.4",
     "@nrwl/jest": "13.9.4",
@@ -48,10 +52,6 @@
     "prettier": "^2.5.1",
     "react-test-renderer": "17.0.2",
     "ts-jest": "27.0.5",
-    "typescript": "~4.5.2",
-    "@mui/material": "latest",
-    "@mui/icons-material": "latest",
-    "@emotion/styled": "latest",
-    "@emotion/react": "latest"
+    "typescript": "~4.5.2"
   }
 }

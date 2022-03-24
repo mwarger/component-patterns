@@ -1,5 +1,7 @@
 import React, { Suspense } from 'react';
-import { Box, Button, ButtonGroup, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
+
+// import { ComponentLib } from '@showcase/component-lib';
 
 // lazy load components
 const LazyMenuExample = React.lazy(() => import('./menu-example/menu-example'));
@@ -104,6 +106,8 @@ export function App() {
         })}
       </Box>
       <Suspense fallback="reticulating splines">{<Example />}</Suspense>
+
+      {/* <ComponentLib /> */}
     </Container>
   );
 }

@@ -1,0 +1,12 @@
+{
+  "name": "@showcase/component-lib",
+  "version": "0.0.1",
+  "main": "./component-lib.umd.js",
+  "module": "./component-lib.es.js",
+  "exports": {
+    ".": {
+      "import": "./component-lib.es.js",
+      "require": "./component-lib.umd.js"
+    }
+  }
+}

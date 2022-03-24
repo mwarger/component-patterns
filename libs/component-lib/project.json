@@ -1,0 +1,33 @@
+{
+  "root": "libs/component-lib",
+  "sourceRoot": "libs/component-lib/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nxext/vite:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/component-lib",
+        "configFile": "@nxext/vite/plugins/vite-package",
+        "frameworkConfigFile": "@nxext/react/plugins/vite",
+        "entryFile": "src/index.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/component-lib/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/component-lib"],
+      "options": {
+        "jestConfig": "libs/component-lib/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
